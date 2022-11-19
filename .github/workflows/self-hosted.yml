@@ -39,6 +39,7 @@ jobs:
         with:
           mode: start
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          # Ubuntu 22.04 region AMI
           ec2-image-id: ami-050b6fdb9f05d7b32
           ec2-instance-type: t3.nano
           subnet-id: ${{ secrets.AWS_EC2_SUBNET_ID }}
