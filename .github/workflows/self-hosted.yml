@@ -1,11 +1,23 @@
 name: do-the-job
 
 on:
-  pull_request
   push:
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.rst'
+      - '**/*.md'
     branches:
       - master
       - main
+      - '[0-9].[0-9]'
+  pull_request:
+    branches:
+      - master
+      - main
+      - '[0-9].[0-9]'
+  # Uncomment to enable nightly
+  # schedule:
+  #   - cron: '0 0 * * *' 
 
 jobs:
   start-runner:
