@@ -1,5 +1,24 @@
 name: do-the-job
-on: pull_request
+
+on:
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.rst'
+      - '**/*.md'
+    branches:
+      - master
+      - main
+      - '[0-9].[0-9]'
+  pull_request:
+    branches:
+      - master
+      - main
+      - '[0-9].[0-9]'
+  # Uncomment to enable nightly
+  # schedule:
+  #   - cron: '0 0 * * *' 
+
 jobs:
   start-runner:
     name: Start self-hosted EC2 runner
@@ -20,6 +39,7 @@ jobs:
         with:
           mode: start
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          # Ubuntu 22.04 region AMI
           ec2-image-id: ami-050b6fdb9f05d7b32
           ec2-instance-type: t3.nano
           subnet-id: ${{ secrets.AWS_EC2_SUBNET_ID }}
@@ -30,6 +50,8 @@ jobs:
           #     {"Key": "Name", "Value": "ec2-github-runner"},
           #     {"Key": "GitHubRepository", "Value": "${{ github.repository }}"}
           #   ]
+
+
   do-the-job:
     name: Do the job on the runner
     needs: start-runner # required to start the main job when the runner is ready
@@ -37,6 +59,8 @@ jobs:
     steps:
       - name: Hello World
         run: echo 'Hello World!'
+
+
   stop-runner:
     name: Stop self-hosted EC2 runner
     needs:
